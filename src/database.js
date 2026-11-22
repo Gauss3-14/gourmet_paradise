@@ -1,0 +1,15 @@
+const mongoose = require("mongoose");
+
+/*
+// PROD ENV
+mongoose.connect("mongodb://database/mydatabase")
+.then(db=>console.log("DB is connected to ", db.connection.host))
+.catch(err=>console.error(err));
+*/
+
+// DEV ENV
+mongoose.connect("mongodb://localhost:27018/mydb")
+.then(db=>console.log("DB is connected to ", db.connection.host))
+.catch(err=>console.error(err));
+
+
