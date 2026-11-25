@@ -1,16 +1,29 @@
-version: "3"
-
 services:
   webapp:
-    container_name: contenedor_app
+    container_name: gourmet_paradise_app
     restart: always
     build: .
     ports:
       - "5000:3000"
-    links:
-      - database
+    environment:
+      - MONGO_URI=mongodb://database:27017/gourmet_paradise_db
+      - PORT=3000
+    depends_on:
+      database:
+        condition: service_healthy
   database:
-    container_name: contenedor_db
-    image: mongo
+    container_name: gourmet_paradise_db
+    image: mongo:7
+    restart: always
     ports:
       - "27019:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mongo_data:
